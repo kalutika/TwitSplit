@@ -6,16 +6,17 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColor">@color/textColorPrimary</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
         <item name="android:statusBarColor">@color/textColorPrimary</item>
         <item name="android:editTextColor">@color/textColorPrimary</item>
-        <item name="android:textColorPrimary">@color/textColorPrimary</item>
         <item name="android:textColorSecondary">@color/textColorPrimary</item>
         <item name="android:textColorTertiary">@color/textColorPrimary</item>
         <item name="android:textColorPrimaryInverse">@color/textColorPrimary</item>
         <item name="android:textColorSecondaryInverse">@color/textColorPrimary</item>
         <item name="android:textColorTertiaryInverse">@color/textColorPrimary</item>
-        <item name="android:actionMenuTextAppearance">@style/customActionBar</item>
+        <item name="android:actionMenuTextAppearance">@color/colorPrimary</item>
+        <item name="android:actionMenuTextColor">@color/colorPrimary</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

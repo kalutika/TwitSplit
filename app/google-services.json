@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "651379907390",
+    "firebase_url": "https://twitsplit-7dba3.firebaseio.com",
+    "project_id": "twitsplit-7dba3",
+    "storage_bucket": "twitsplit-7dba3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:651379907390:android:6f092b4945b79e88",
+        "android_client_info": {
+          "package_name": "app.com.ndtrung.twitsplit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "651379907390-78c52etft3pjvk8nrkmaipa5p0m5aok6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.com.ndtrung.twitsplit",
+            "certificate_hash": "8049714a2ae502647032fdbae48147d23a1d1ef2"
+          }
+        },
+        {
+          "client_id": "651379907390-6ei2btbsh25ooh1d3t95fsi3sv78bmrv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUEXC153x8D_nA-XTKKorKD4MEMHuP8b0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "651379907390-6ei2btbsh25ooh1d3t95fsi3sv78bmrv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
