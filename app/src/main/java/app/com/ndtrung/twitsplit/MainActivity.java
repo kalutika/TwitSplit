@@ -3,27 +3,37 @@ package app.com.ndtrung.twitsplit;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
     private static final int SIGN_IN_REQUEST_CODE = 1;
     private FirebaseAuth mAuth;
+    private FirebaseDatabase mFirebasedatabase;
 
+    private DatabaseReference mDatabase;
 
     private TabLayout tabLayout;
     //Layout
     public static int[] resourceIds = {R.layout.tab_fragment_1, R.layout.tab_fragment_2, R.layout.tab_fragment_3};
+    private static boolean isCalledAlready = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,15 +46,26 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setActionTextColor(Color.WHITE)
-//                        .setActionTextColor(Color.RED)
-//                        .setAction("Action", null).show();
-//                Snackbar snack = Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG);
-//                View snackView = snack.getView();
-//                TextView tv = (TextView) snackView.findViewById(android.support.design.R.id.snackbar_text);
-//                tv.setTextColor(Color.WHITE);
-//                snack.show();
+                String str = "this is a test";//input.getText().toString()
+                if (mAuth.getCurrentUser() != null && mFirebasedatabase != null) {
+                    Log.i("ndt", "i'm in");
+                    mFirebasedatabase
+                            .getReference()
+                            .push()
+                            .setValue(new TweetMessage(str, mAuth.getCurrentUser().getDisplayName())
+                            );
+//                    DatabaseReference ref = mFirebasedatabase.getReference("message"); // Key
+//                    ref.setValue("This is a test message"); // Value
+
+//                    DatabaseReference ref = mFirebasedatabase.getReference();
+//                    if (ref != null) {
+//                        Log.i("ndt", "i'm in 2 - " + mAuth.getCurrentUser().getDisplayName());
+//                        //ref.child("message")
+//                        String id = ref.push().getKey();
+//                        Log.i("ndt", "i'm in 3 -" + id);
+//                        ref.child(id).setValue(new TweetMessage(str, mAuth.getCurrentUser().getDisplayName()));
+//                    }
+                }
             }
         });
 
@@ -76,6 +97,12 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
+        mFirebasedatabase = FirebaseDatabase.getInstance();
+        if (!isCalledAlready) {
+            mFirebasedatabase.setPersistenceEnabled(true);
+            isCalledAlready = true;
+        }
+
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() == null) {
             // Start sign in/sign up activity
@@ -90,9 +117,7 @@ public class MainActivity extends AppCompatActivity {
             // User is already signed in. Therefore, display
             // a welcome Toast
             Toast.makeText(this,
-                    "Welcome " + FirebaseAuth.getInstance()
-                            .getCurrentUser()
-                            .getDisplayName(),
+                    "Welcome " + mAuth.getCurrentUser().getDisplayName(),
                     Toast.LENGTH_LONG)
                     .show();
 
@@ -124,7 +149,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void displayChatMessages() {
+//        mDatabase = FirebaseDatabase.getInstance().getReference();
+//        DatabaseReference myRef = database.getReference("message");
 
+//        FirebaseDatabase db = FirebaseDatabase.getInstance();
+//        DatabaseReference ref = db.getReference("message"); // Key
+        DatabaseReference myRef = mFirebasedatabase.getReference("message");
+
+//        myRef.setValue("Hello, Firebase!");
+        // Read from the database
+//        myRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                // This method is called once with the initial value and again
+//                // whenever data at this location is updated.
+//                String value = dataSnapshot.getValue(String.class);
+//                Log.d("ndt", "Value is: " + value);
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError error) {
+//                // Failed to read value
+//                Log.w("ndt", "Failed to read value.", error.toException());
+//            }
+//        });
     }
 
     @Override
