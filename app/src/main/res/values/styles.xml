@@ -33,4 +33,9 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="InputDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:colorAccent">@color/textColorPrimary</item>
+        <item name="android:textColor">@color/textColorPrimary</item>
+    </style>
+
 </resources>

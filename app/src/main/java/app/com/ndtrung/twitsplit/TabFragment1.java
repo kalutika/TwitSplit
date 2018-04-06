@@ -1,6 +1,5 @@
 package app.com.ndtrung.twitsplit;
 
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -48,6 +47,12 @@ public class TabFragment1 extends Fragment {
     }
 
     public void displayTweet(final boolean isPrivateTweetScreen) {
+        if (tweets == null) {
+            tweets = new ArrayList<>();
+        }
+        if (tweetsAdapter == null) {
+            tweetsAdapter = new TweetListAdapter();
+        }
         Log.i("ndt", "displayTweet");
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref.addValueEventListener(new ValueEventListener() {
@@ -85,9 +90,9 @@ public class TabFragment1 extends Fragment {
         @Override
         public int compare(TweetMessage o, TweetMessage o2) {
             try {
-                String d1 = DateFormat.format(Contains.DATE_TIME_PATTER, o.getTweetTime()).toString();
-                String d2 = DateFormat.format(Contains.DATE_TIME_PATTER, o2.getTweetTime()).toString();
-                return new SimpleDateFormat(Contains.DATE_TIME_PATTER).parse(d2).compareTo(new SimpleDateFormat(Contains.DATE_TIME_PATTER).parse(d1));
+                String d1 = DateFormat.format(Constants.DATE_TIME_PATTER, o.getTweetTime()).toString();
+                String d2 = DateFormat.format(Constants.DATE_TIME_PATTER, o2.getTweetTime()).toString();
+                return new SimpleDateFormat(Constants.DATE_TIME_PATTER).parse(d2).compareTo(new SimpleDateFormat(Constants.DATE_TIME_PATTER).parse(d1));
             } catch (Exception e) {
                 return 0;
             }
