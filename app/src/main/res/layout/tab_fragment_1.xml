@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp">
+    android:paddingTop="0dp"
+    android:layout_marginTop="0dp" >
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list_of_tweets"
@@ -12,7 +13,9 @@
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:divider="@android:color/darker_gray"
+        android:divider="@android:color/black"
+        android:clipToPadding="false"
+        android:verticalSpacing="1dp"
         android:dividerHeight="1dp"
         android:nestedScrollingEnabled="true"
         android:scrollbars="vertical"

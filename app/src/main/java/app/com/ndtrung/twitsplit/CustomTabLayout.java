@@ -8,7 +8,7 @@ import java.lang.reflect.Field;
 
 public class CustomTabLayout extends TabLayout {
     private static final int WIDTH_INDEX = 0;
-    private static final int DIVIDER_FACTOR = 3;
+    private static final int DIVIDER_FACTOR = 2;
     private static final String SCROLLABLE_TAB_MIN_WIDTH = "mScrollableTabMinWidth";
 
     public CustomTabLayout(Context context) {

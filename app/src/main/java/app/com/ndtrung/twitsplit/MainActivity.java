@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     //Layout
-    public static int[] resourceIds = {R.layout.tab_fragment_1, R.layout.tab_fragment_2, R.layout.tab_fragment_3};
     private static boolean isCalledAlready = false;
 
     @Override
@@ -52,9 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         if (tabLayout != null) {
-            tabLayout.addTab(tabLayout.newTab().setText("Tab 1"));
-            tabLayout.addTab(tabLayout.newTab().setText("Tab 2"));
-            tabLayout.addTab(tabLayout.newTab().setText("Tab 3"));
+            tabLayout.addTab(tabLayout.newTab().setText("All Tweets"));
+            tabLayout.addTab(tabLayout.newTab().setText("Home"));
 
             viewPager = (ViewPager) findViewById(R.id.view_pager);
             final PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
