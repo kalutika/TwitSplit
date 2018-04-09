@@ -1,8 +1,10 @@
-package app.com.ndtrung.twitsplit;
+package app.com.ndtrung.twitsplit.Adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+
+import app.com.ndtrung.twitsplit.R;
 
 public class TweetViewHolder extends RecyclerView.ViewHolder {
     TextView tweetText;

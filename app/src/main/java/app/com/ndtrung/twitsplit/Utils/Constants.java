@@ -1,4 +1,4 @@
-package app.com.ndtrung.twitsplit;
+package app.com.ndtrung.twitsplit.Utils;
 
 public class Constants {
 

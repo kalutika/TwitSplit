@@ -1,8 +1,10 @@
-package app.com.ndtrung.twitsplit;
+package app.com.ndtrung.twitsplit.Activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -23,15 +25,25 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
+import app.com.ndtrung.twitsplit.Utils.Constants;
+import app.com.ndtrung.twitsplit.CustomTabLayout;
+import app.com.ndtrung.twitsplit.Adapter.PagerAdapter;
+import app.com.ndtrung.twitsplit.R;
+import app.com.ndtrung.twitsplit.Fragment.TabFragment1;
+import app.com.ndtrung.twitsplit.TweetMessage;
+import app.com.ndtrung.twitsplit.Utils.Utils;
+
 
 public class MainActivity extends AppCompatActivity {
     private static final int SIGN_IN_REQUEST_CODE = 1;
+    private static final String STRING_WELCOME = "";
     private FirebaseAuth mAuth;
     private FirebaseDatabase mFirebasedatabase;
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    //Layout
+    private TextView tvTitle;
+
     private static boolean isCalledAlready = false;
 
     @Override
@@ -45,11 +57,19 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openInpputDialog();
+                openInputDialog();
             }
         });
 
-        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+        collapsingToolbarLayout.setTitle(getResources().getString(R.string.app_name));
+        collapsingToolbarLayout.setExpandedTitleColor(Color.TRANSPARENT);
+        collapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getColor(R.color.textColorPrimary));
+
+        tvTitle = (TextView) findViewById(R.id.tv_title);
+        tvTitle.setText(Constants.ONE_SPACE_CHARACTER);
+
+        tabLayout = (CustomTabLayout) findViewById(R.id.tab_layout);
         if (tabLayout != null) {
             tabLayout.addTab(tabLayout.newTab().setText("All Tweets"));
             tabLayout.addTab(tabLayout.newTab().setText("Home"));
@@ -62,21 +82,15 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
                     viewPager.setCurrentItem(tab.getPosition());
-                    Log.i("ndt", "onTabSelected pos = " + tab.getPosition());
-                    if (tab.getPosition() == 0 || tab.getPosition() == 1) {
-                        TabFragment1 frag1 = (TabFragment1) viewPager.getAdapter().instantiateItem(viewPager, tab.getPosition());
-                        frag1.displayTweet(tab.getPosition() == 1 ? true : false);
-                    }
+                    displayTweets();
                 }
 
                 @Override
                 public void onTabUnselected(TabLayout.Tab tab) {
-
                 }
 
                 @Override
                 public void onTabReselected(TabLayout.Tab tab) {
-
                 }
             });
         }
@@ -90,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() == null) {
             // Start sign in/sign up activity
+            tvTitle.setText(Constants.ONE_SPACE_CHARACTER);
             startActivityForResult(
                     AuthUI.getInstance()
                             .createSignInIntentBuilder()
@@ -99,29 +114,22 @@ public class MainActivity extends AppCompatActivity {
             );
         } else {
             // User is already signed in
-            Toast.makeText(this,
-                    "Welcome " + mAuth.getCurrentUser().getDisplayName(),
-                    Toast.LENGTH_LONG)
-                    .show();
+            tvTitle.setText(STRING_WELCOME + mAuth.getCurrentUser().getDisplayName());
             // Load contents
             displayTweets();
         }
     }
 
-    private void openInpputDialog() {
+    private void openInputDialog() {
         if (mAuth.getCurrentUser() != null && mFirebasedatabase != null) {
 
             LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
             View promptsView = inflater.inflate(R.layout.input_layout, null);
 
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this, R.style.InputDialog);
-
-            // set prompts.xml to alertdialog builder
             alertDialogBuilder.setView(promptsView);
-
             final TextView tvError = (TextView) promptsView.findViewById(R.id.tvError);
             final EditText userInput = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput);
-
             // set dialog message
             alertDialogBuilder
                     .setCancelable(false)
@@ -155,26 +163,23 @@ public class MainActivity extends AppCompatActivity {
                     });
                 }
             });
-            // show it
             alertDialog.show();
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SIGN_IN_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(this,
-                        "Successfully signed in. Welcome!",
-                        Toast.LENGTH_LONG)
-                        .show();
+                tvTitle.setText(STRING_WELCOME + mAuth.getCurrentUser().getDisplayName());
                 displayTweets();
             } else {
+                tvTitle.setText(Constants.ONE_SPACE_CHARACTER);
                 Toast.makeText(this,
-                        "We couldn't sign you in. Please try again later.",
+                        R.string.sign_in_failed,
                         Toast.LENGTH_LONG)
                         .show();
-
                 // Close the app
                 finish();
             }
@@ -197,12 +202,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             logout();
             return true;
@@ -212,21 +213,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void logout() {
         FirebaseAuth.getInstance().signOut();
+        tvTitle.setText(Constants.ONE_SPACE_CHARACTER);
         Intent intent = new Intent(MainActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }
-
-    private boolean checkInvalidString(String arr[]) {
-        for (String item : arr) {
-            if (item.length() > Constants.MAX_CHARACTERS_NUMBER) {
-                return false;
-            }
-        }
-        return true;
-    }
-
 
     private boolean postTweet(String text, TextView tvError) {
         if (text.isEmpty()) {
@@ -238,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         String arr[] = text.split(Constants.ONE_SPACE_CHARACTER);
-        if (!checkInvalidString(arr)) {
+        if (!Utils.checkInvalidString(arr)) {
             tvError.setText(R.string.err_tweet_invalid);
             return false;
         }
@@ -254,7 +246,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void pushToServer(String str) {
-        Log.i("ndt", "Push string to server = " + str);
         if (mAuth.getCurrentUser() != null && mFirebasedatabase != null) {
             mFirebasedatabase
                     .getReference()

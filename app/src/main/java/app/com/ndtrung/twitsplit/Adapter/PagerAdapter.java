@@ -1,8 +1,10 @@
-package app.com.ndtrung.twitsplit;
+package app.com.ndtrung.twitsplit.Adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+
+import app.com.ndtrung.twitsplit.Fragment.TabFragment1;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
     int mNumOfTabs;

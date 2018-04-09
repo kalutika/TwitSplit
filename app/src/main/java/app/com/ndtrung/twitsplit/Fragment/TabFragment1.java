@@ -1,4 +1,4 @@
-package app.com.ndtrung.twitsplit;
+package app.com.ndtrung.twitsplit.Fragment;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -24,6 +24,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import app.com.ndtrung.twitsplit.Utils.Constants;
+import app.com.ndtrung.twitsplit.R;
+import app.com.ndtrung.twitsplit.Adapter.TweetListAdapter;
+import app.com.ndtrung.twitsplit.TweetMessage;
 
 
 public class TabFragment1 extends Fragment {
@@ -62,9 +67,7 @@ public class TabFragment1 extends Fragment {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     TweetMessage tweet = postSnapshot.getValue(TweetMessage.class);
-                    Log.i("ndt", "isPrivateTweetScreen = " + isPrivateTweetScreen);
                     if (user != null)
-                        Log.i("ndt", "user.getDisplayName() = " + user.getDisplayName());
                     if (isPrivateTweetScreen){
                         if(user != null && tweet.getTweetUser().equals(user.getDisplayName())) {
                             tweets.add(tweet);

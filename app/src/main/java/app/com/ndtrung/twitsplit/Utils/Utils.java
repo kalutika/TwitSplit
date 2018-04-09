@@ -1,4 +1,4 @@
-package app.com.ndtrung.twitsplit;
+package app.com.ndtrung.twitsplit.Utils;
 
 import android.content.Context;
 import android.graphics.Point;
@@ -48,13 +48,12 @@ public class Utils {
         return currentTweet.isEmpty() ? nextString : (currentTweet + Constants.ONE_SPACE_CHARACTER + nextString);
     }
 
+    // Calculate a total number of tweet parts. It's just an estimation.
     private static long calculateTotalTweet(String arr[]) {
         long numberOfCharacter = 0;
         for (int i = 0; i < arr.length; i++) {
             numberOfCharacter += arr[i].length() + ((i < (arr.length - 1)) ? 1 : 0);
         }
-        Log.i("ndt", "numberOfCharacter = " + numberOfCharacter);
-        Log.i("ndt", "calculateTotalTweet = " + ((numberOfCharacter / Constants.MAX_CHARACTERS_NUMBER) + 1));
         return ((numberOfCharacter / Constants.MAX_CHARACTERS_NUMBER) + 1);
     }
 
@@ -69,23 +68,24 @@ public class Utils {
 
     public static String[] splitMessage(String arr[]) {
         String resultArr[];
-        long totalTweets = calculateTotalTweet(arr);
-        int numberOfTweet;
-        String tweet;// = numberOfTweet + "/" + totalTweets + Constants.ONE_SPACE_CHARACTER;
-        int i;
+        long totalTweets = calculateTotalTweet(arr); // Total number of tweet parts.
+        int numberOfTweet; // current tweet part number per total.
+        String tweet; // tweet content.
+        int i; // index of array
         boolean isFinished = false;
+
         do {
             resultArr = new String[0];
-            numberOfTweet = 0;
+            numberOfTweet = 0; //
             i = 0;
             tweet = (numberOfTweet + 1) + "/" + totalTweets;
-            Log.i("ndt", "Split --> totalTweets = " + totalTweets);
+
             while (i < arr.length) {
-                Log.i("ndt", "Split --> i = " + i);
                 tweet += Constants.ONE_SPACE_CHARACTER + arr[i];
                 if (tweet.length() > Constants.MAX_CHARACTERS_NUMBER) {
                     return new String[]{}; // empty
                 }
+                // if array does not have any elements OR current content can't add more text
                 if ((i + 1) >= arr.length || checkAddingNextString(arr[i + 1], tweet).length() > Constants.MAX_CHARACTERS_NUMBER) {
                     resultArr = putStringToStringArray(resultArr, tweet);
                     numberOfTweet++;
@@ -93,14 +93,24 @@ public class Utils {
                 }
                 i++;
             }
+
+            // if numberOfTweet and totalTweets, is not equal. do above while loop again.
             if (numberOfTweet != totalTweets) {
-                Log.i("ndt", "Split --> numberOfTweet = " + numberOfTweet);
-                Log.i("ndt", "Split --> totalTweets = " + totalTweets);
                 totalTweets = numberOfTweet;
             } else {
                 isFinished = true;
             }
         } while (!isFinished);
+
         return resultArr;
+    }
+
+    public static boolean checkInvalidString(String arr[]) {
+        for (String item : arr) {
+            if (item.length() > Constants.MAX_CHARACTERS_NUMBER) {
+                return false;
+            }
+        }
+        return true;
     }
 }

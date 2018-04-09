@@ -1,4 +1,4 @@
-package app.com.ndtrung.twitsplit;
+package app.com.ndtrung.twitsplit.Adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
+
+import app.com.ndtrung.twitsplit.R;
+import app.com.ndtrung.twitsplit.TweetMessage;
 
 public class TweetListAdapter extends RecyclerView.Adapter<TweetViewHolder> {
     private List<TweetMessage> list;
@@ -32,6 +35,16 @@ public class TweetListAdapter extends RecyclerView.Adapter<TweetViewHolder> {
         holder.tweetText.setText(tweet.getTweetText()); // content
         holder.tweetUser.setText(tweet.getTweetUser()); // user name
         holder.tweetTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)", tweet.getTweetTime())); // format time
+    }
+
+    public void clear() {
+        list.clear();
+        notifyDataSetChanged();
+    }
+
+    public void addAll(List<TweetMessage> list) {
+        list.addAll(list);
+        notifyDataSetChanged();
     }
 
     @Override

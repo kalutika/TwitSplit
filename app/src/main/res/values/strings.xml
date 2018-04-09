@@ -5,4 +5,5 @@
     <string name="action_sign_out">Sign out</string>
     <string name="err_tweet_invalid">Invalid tweet.</string>
     <string name="err_tweet_empty">Please type something.</string>
+    <string name="sign_in_failed">We couldn\'t sign you in. Please try again later.</string>
 </resources>

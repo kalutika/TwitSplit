@@ -6,6 +6,8 @@ import android.util.AttributeSet;
 
 import java.lang.reflect.Field;
 
+import app.com.ndtrung.twitsplit.Utils.Utils;
+
 public class CustomTabLayout extends TabLayout {
     private static final int WIDTH_INDEX = 0;
     private static final int DIVIDER_FACTOR = 2;
