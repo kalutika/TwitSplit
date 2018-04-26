@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
                     viewPager.setCurrentItem(tab.getPosition());
-                    displayTweets();
+//                    displayTweets();
                 }
 
                 @Override
@@ -187,10 +187,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void displayTweets() {
-        if (viewPager.getCurrentItem() == 0 || viewPager.getCurrentItem() == 1) {
-            TabFragment1 frag1 = (TabFragment1) viewPager.getAdapter().instantiateItem(viewPager, viewPager.getCurrentItem());
-            frag1.displayTweet(viewPager.getCurrentItem() == 0 ? false : true);
-        }
+//        if (viewPager.getCurrentItem() == 0 || viewPager.getCurrentItem() == 1) {
+//            TabFragment1 frag1 = (TabFragment1) viewPager.getAdapter().instantiateItem(viewPager, viewPager.getCurrentItem());
+//            frag1.displayTweet(viewPager.getCurrentItem() == 0 ? false : true);
+//        }
+        TabFragment1 frag1 = (TabFragment1) viewPager.getAdapter().instantiateItem(viewPager, 0);
+        frag1.displayTweet(false);
+        TabFragment1 frag2 = (TabFragment1) viewPager.getAdapter().instantiateItem(viewPager, 1);
+        frag2.displayTweet(true);
     }
 
     @Override

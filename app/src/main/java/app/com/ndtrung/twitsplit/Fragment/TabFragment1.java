@@ -1,5 +1,7 @@
 package app.com.ndtrung.twitsplit.Fragment;
 
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,9 +35,10 @@ import app.com.ndtrung.twitsplit.TweetMessage;
 
 
 public class TabFragment1 extends Fragment {
-    private List<TweetMessage> tweets;
+    private ArrayList<TweetMessage> tweets;
     private RecyclerView listOfTweets;
     private TweetListAdapter tweetsAdapter;
+    private static final String TWEET_LIST_KEY = "tweet_list_key";
 
     @Nullable
     @Override
@@ -48,6 +52,7 @@ public class TabFragment1 extends Fragment {
         listOfTweets.setLayoutManager(layoutManager);
         listOfTweets.setAdapter(tweetsAdapter);
 
+        onRestoreInstanceState(savedInstanceState);
         return view;
     }
 
@@ -88,6 +93,20 @@ public class TabFragment1 extends Fragment {
         });
     }
 
+    private void onRestoreInstanceState(Bundle savedInstanceState){
+        if(savedInstanceState != null){
+            tweets.clear();
+            tweets =  savedInstanceState.getParcelableArrayList(TWEET_LIST_KEY);
+            tweetsAdapter.setAdapterData(tweets);
+            tweetsAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(TWEET_LIST_KEY, tweets);
+    }
 
     public class ObjectComparator implements Comparator<TweetMessage> {
         @Override
